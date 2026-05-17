@@ -1,0 +1,345 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<kml xmlns="http://www.opengis.net/kml/2.2">
+  <Document>
+    <name>Útilegukortið / Camping Card 2026</name>
+    <description><![CDATA[Þetta eru þau tjaldsvæði sem eru innfalin í Útilegukortinu þetta árið.<br>These are the camping sites that are available with the Camping Card this year.]]></description>
+    <Style id="icon-1765-7CB342-normal">
+      <IconStyle>
+        <color>ff42b37c</color>
+        <scale>1</scale>
+        <Icon>
+          <href>https://www.gstatic.com/mapspro/images/stock/503-wht-blank_maps.png</href>
+        </Icon>
+      </IconStyle>
+      <LabelStyle>
+        <scale>0</scale>
+      </LabelStyle>
+    </Style>
+    <Style id="icon-1765-7CB342-highlight">
+      <IconStyle>
+        <color>ff42b37c</color>
+        <scale>1</scale>
+        <Icon>
+          <href>https://www.gstatic.com/mapspro/images/stock/503-wht-blank_maps.png</href>
+        </Icon>
+      </IconStyle>
+      <LabelStyle>
+        <scale>1</scale>
+      </LabelStyle>
+    </Style>
+    <StyleMap id="icon-1765-7CB342">
+      <Pair>
+        <key>normal</key>
+        <styleUrl>#icon-1765-7CB342-normal</styleUrl>
+      </Pair>
+      <Pair>
+        <key>highlight</key>
+        <styleUrl>#icon-1765-7CB342-highlight</styleUrl>
+      </Pair>
+    </StyleMap>
+    <Style id="icon-1765-7CB342-nodesc-normal">
+      <IconStyle>
+        <color>ff42b37c</color>
+        <scale>1</scale>
+        <Icon>
+          <href>https://www.gstatic.com/mapspro/images/stock/503-wht-blank_maps.png</href>
+        </Icon>
+      </IconStyle>
+      <LabelStyle>
+        <scale>0</scale>
+      </LabelStyle>
+      <BalloonStyle>
+        <text><![CDATA[<h3>$[name]</h3>]]></text>
+      </BalloonStyle>
+    </Style>
+    <Style id="icon-1765-7CB342-nodesc-highlight">
+      <IconStyle>
+        <color>ff42b37c</color>
+        <scale>1</scale>
+        <Icon>
+          <href>https://www.gstatic.com/mapspro/images/stock/503-wht-blank_maps.png</href>
+        </Icon>
+      </IconStyle>
+      <LabelStyle>
+        <scale>1</scale>
+      </LabelStyle>
+      <BalloonStyle>
+        <text><![CDATA[<h3>$[name]</h3>]]></text>
+      </BalloonStyle>
+    </Style>
+    <StyleMap id="icon-1765-7CB342-nodesc">
+      <Pair>
+        <key>normal</key>
+        <styleUrl>#icon-1765-7CB342-nodesc-normal</styleUrl>
+      </Pair>
+      <Pair>
+        <key>highlight</key>
+        <styleUrl>#icon-1765-7CB342-nodesc-highlight</styleUrl>
+      </Pair>
+    </StyleMap>
+    <Folder>
+      <name>Tjaldsvæði / Camping sites</name>
+      <Placemark>
+        <name>Akranes Campsite</name>
+        <styleUrl>#icon-1765-7CB342-nodesc</styleUrl>
+        <Point>
+          <coordinates>
+            -22.0675448,64.3260607,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Patreksfjörður Tjaldsvæði / Camping Ground</name>
+        <styleUrl>#icon-1765-7CB342-nodesc</styleUrl>
+        <Point>
+          <coordinates>
+            -23.9743152,65.5917625,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Sundlaug Bolungarvíkur - Árbær</name>
+        <styleUrl>#icon-1765-7CB342-nodesc</styleUrl>
+        <Point>
+          <coordinates>
+            -23.2532297,66.1554769,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Campground near Kirkjufellfoss</name>
+        <styleUrl>#icon-1765-7CB342-nodesc</styleUrl>
+        <Point>
+          <coordinates>
+            -23.2581586,64.9205891,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Grettislaug swimming pool</name>
+        <styleUrl>#icon-1765-7CB342-nodesc</styleUrl>
+        <Point>
+          <coordinates>
+            -22.2019492,65.4461988,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Sund­laug­in á Drangs­nesi</name>
+        <styleUrl>#icon-1765-7CB342-nodesc</styleUrl>
+        <Point>
+          <coordinates>
+            -21.4382108,65.6896009,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Skagaströnd Campsite</name>
+        <styleUrl>#icon-1765-7CB342-nodesc</styleUrl>
+        <Point>
+          <coordinates>
+            -20.2928964,65.8258532,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Kópasker Camping Ground</name>
+        <styleUrl>#icon-1765-7CB342-nodesc</styleUrl>
+        <Point>
+          <coordinates>
+            -16.4433511,66.301227,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name><![CDATA[Möðrudalur Camping & Cottages]]></name>
+        <styleUrl>#icon-1765-7CB342-nodesc</styleUrl>
+        <Point>
+          <coordinates>
+            -15.8830226,65.3751979,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Þórshöfn Camping</name>
+        <styleUrl>#icon-1765-7CB342-nodesc</styleUrl>
+        <Point>
+          <coordinates>
+            -15.3283848,66.1986128,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Tjaldsvæðið Kleifar</name>
+        <styleUrl>#icon-1765-7CB342-nodesc</styleUrl>
+        <Point>
+          <coordinates>
+            -18.0572174,63.8010833,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Skjòl Campground</name>
+        <styleUrl>#icon-1765-7CB342-nodesc</styleUrl>
+        <Point>
+          <coordinates>
+            -20.233818,64.3111758,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Stokkseyri Camping</name>
+        <styleUrl>#icon-1765-7CB342-nodesc</styleUrl>
+        <Point>
+          <coordinates>
+            -21.0543971,63.8363287,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Þorlákshöfn Camping</name>
+        <styleUrl>#icon-1765-7CB342-nodesc</styleUrl>
+        <Point>
+          <coordinates>
+            -21.3799288,63.8525768,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Camping Sandgerdi</name>
+        <styleUrl>#icon-1765-7CB342-nodesc</styleUrl>
+        <Point>
+          <coordinates>
+            -22.6974958,64.0396616,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Faxi tjaldsvæði</name>
+        <styleUrl>#icon-1765-7CB342-nodesc</styleUrl>
+        <Point>
+          <coordinates>
+            -20.3370667,64.2279184,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Seydisfjordur Camping Site</name>
+        <styleUrl>#icon-1765-7CB342-nodesc</styleUrl>
+        <Point>
+          <coordinates>
+            -14.0111549,65.2604585,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Studlagil tjaldsvæði</name>
+        <styleUrl>#icon-1765-7CB342-nodesc</styleUrl>
+        <Point>
+          <coordinates>
+            -15.311568,65.1643894,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Tjaldsvæðið á Húsavík</name>
+        <styleUrl>#icon-1765-7CB342-nodesc</styleUrl>
+        <Point>
+          <coordinates>
+            -17.3432041,66.0517102,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Tálknafjördur Campsite</name>
+        <styleUrl>#icon-1765-7CB342-nodesc</styleUrl>
+        <Point>
+          <coordinates>
+            -23.8467247,65.6293544,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Laugarvatn-Camping</name>
+        <description>Sími/Phone: +354 888 8890</description>
+        <styleUrl>#icon-1765-7CB342</styleUrl>
+        <Point>
+          <coordinates>
+            -20.7330947,64.222074,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Campsite Svartiskógur Egilsstaðir</name>
+        <styleUrl>#icon-1765-7CB342-nodesc</styleUrl>
+        <Point>
+          <coordinates>
+            -14.5643611,65.5139616,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Búðardalur tjaldsvæði</name>
+        <styleUrl>#icon-1765-7CB342-nodesc</styleUrl>
+        <Point>
+          <coordinates>
+            -21.7636418,65.1083021,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Bragdavellir Campingground</name>
+        <styleUrl>#icon-1765-7CB342-nodesc</styleUrl>
+        <Point>
+          <coordinates>
+            -14.5165811,64.6440512,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Tunguskogur Campground</name>
+        <styleUrl>#icon-1765-7CB342-nodesc</styleUrl>
+        <Point>
+          <coordinates>
+            -23.2039703,66.060327,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Bakkafjordur Camping</name>
+        <styleUrl>#icon-1765-7CB342-nodesc</styleUrl>
+        <Point>
+          <coordinates>
+            -14.8029322,66.0368958,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Siglufjörður Campsite</name>
+        <description><![CDATA[Heimilisfang Gránugata<br>Póstfang/Bær 580 Siglufjörður<br>Sími 8880349<br>Netfang evanger@evanger.is<br>Vefsíða www.fjallabyggd.is<br>Facebook facebook.com/siglufjordur.campsite<br>Instagram instagram.com/siglufjordur_campsite<br>Opnunartími 15. maí – 15. október (veðurháð)<br>Fjarlægð frá Reykjavík: 386 km<br>Fjarlægð frá Akureyri: 77 km<br>Fjarlægð frá Seyðisfirði: 351 km]]></description>
+        <styleUrl>#icon-1765-7CB342</styleUrl>
+        <Point>
+          <coordinates>
+            -18.9101066,66.1495926,0
+          </coordinates>
+        </Point>
+      </Placemark>
+      <Placemark>
+        <name>Kiðagil</name>
+        <description><![CDATA[Kiðagil, Bárðardal<br>Þingeyjarsveit<br>641 Húsavík<br> <br>Sími: 4643290<br><br>Gsm: 8953291, 8954742, 8953295<br><br>Netfang: kidagil@kidagil.is]]></description>
+        <styleUrl>#icon-1765-7CB342</styleUrl>
+        <Point>
+          <coordinates>
+            -17.4559447,65.5021807,0
+          </coordinates>
+        </Point>
+      </Placemark>
+    </Folder>
+    <Folder>
+      <name>Untitled layer</name>
+    </Folder>
+    <Folder>
+      <name>Untitled layer</name>
+    </Folder>
+  </Document>
+</kml>

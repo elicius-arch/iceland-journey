@@ -1,0 +1,317 @@
+<!DOCTYPE html>
+<html lang="de">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Island Route und Campingkarte</title>
+  <link rel="stylesheet" href="leaflet.css" />
+  <style>
+    html,
+    body {
+      margin: 0;
+      padding: 0;
+      height: 100%;
+    }
+
+    #map {
+      width: 100%;
+      height: 100vh;
+    }
+
+    .legend {
+      background: white;
+      padding: 10px 12px;
+      line-height: 1.6;
+      box-shadow: 0 0 12px rgba(0, 0, 0, 0.2);
+      border-radius: 6px;
+      font-family: Arial, sans-serif;
+      font-size: 14px;
+    }
+
+    .legend-color {
+      display: inline-block;
+      width: 16px;
+      height: 16px;
+      margin-right: 8px;
+      vertical-align: middle;
+      border-radius: 3px;
+      border: 1px solid #999;
+    }
+    .marker-circle {
+      width: 18px;
+      height: 18px;
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      font-size: 11px;
+      font-weight: 700;
+      color: #fff;
+      border: 1.5px solid #222;
+      border-radius: 50%;
+      box-sizing: border-box;
+      line-height: 1;
+      text-align: center;
+      text-shadow: 0 1px 0 rgba(0,0,0,0.25);
+      transition: transform 0.12s ease, opacity 0.12s ease;
+    }
+    .marker-circle.dim {
+      opacity: 0.28;
+      transform: scale(0.92);
+    }
+  </style>
+</head>
+<body>
+  <div id="map"></div>
+
+  <script src="leaflet.js"></script>
+  <script>
+    const data = [
+      { name: "Akranes Campsite", type: "Campingplatz", campingCard: true, lat: 64.3260607, lng: -22.0675448 },
+      { name: "Patreksfjörður Tjaldsvæði / Camping Ground", type: "Campingplatz", campingCard: true, lat: 65.5917625, lng: -23.9743152 },
+      { name: "Sundlaug Bolungarvíkur - Árbær", type: "Campingplatz", campingCard: true, lat: 66.1554769, lng: -23.2532297 },
+      { name: "Campground near Kirkjufellfoss", type: "Campingplatz", campingCard: true, lat: 64.9205891, lng: -23.2581586 },
+      { name: "Grettislaug swimming pool", type: "Campingplatz", campingCard: true, lat: 65.4461988, lng: -22.2019492 },
+      { name: "Sund­laug­in á Drangs­nesi", type: "Campingplatz", campingCard: true, lat: 65.6896009, lng: -21.4382108 },
+      { name: "Skagaströnd Campsite", type: "Campingplatz", campingCard: true, lat: 65.8258532, lng: -20.2928964 },
+      { name: "Kópasker Camping Ground", type: "Campingplatz", campingCard: true, lat: 66.301227, lng: -16.4433511 },
+      { name: "Möðrudalur Camping & Cottages", type: "Campingplatz", campingCard: true, lat: 65.3751979, lng: -15.8830226 },
+      { name: "Þórshöfn Camping", type: "Campingplatz", campingCard: true, lat: 66.1986128, lng: -15.3283848 },
+      { name: "Tjaldsvæðið Kleifar", type: "Campingplatz", campingCard: true, lat: 63.8010833, lng: -18.0572174 },
+      { name: "Skjòl Campground", type: "Campingplatz", campingCard: true, lat: 64.3111758, lng: -20.233818 },
+      { name: "Stokkseyri Camping", type: "Campingplatz", campingCard: true, lat: 63.8363287, lng: -21.0543971 },
+      { name: "Þorlákshöfn Camping", type: "Campingplatz", campingCard: true, lat: 63.8525768, lng: -21.3799288 },
+      { name: "Camping Sandgerdi", type: "Campingplatz", campingCard: true, lat: 64.0396616, lng: -22.6974958 },
+      { name: "Faxi tjaldsvæði", type: "Campingplatz", campingCard: true, lat: 64.2279184, lng: -20.3370667 },
+      { name: "Seydisfjordur Camping Site", type: "Campingplatz", campingCard: true, lat: 65.2604585, lng: -14.0111549 },
+      { name: "Studlagil tjaldsvæði", type: "Campingplatz", campingCard: true, lat: 65.1643894, lng: -15.311568 },
+      { name: "Tjaldsvæðið á Húsavík", type: "Campingplatz", campingCard: true, lat: 66.0517102, lng: -17.3432041 },
+      { name: "Tálknafjördur Campsite", type: "Campingplatz", campingCard: true, lat: 65.6293544, lng: -23.8467247 },
+      { name: "Laugarvatn-Camping", type: "Campingplatz", campingCard: true, lat: 64.222074, lng: -20.7330947 },
+      { name: "Campsite Svartiskógur Egilsstaðir", type: "Campingplatz", campingCard: true, lat: 65.5139616, lng: -14.5643611 },
+      { name: "Búðardalur tjaldsvæði", type: "Campingplatz", campingCard: true, lat: 65.1083021, lng: -21.7636418 },
+      { name: "Bragdavellir Campingground", type: "Campingplatz", campingCard: true, lat: 64.6440512, lng: -14.5165811 },
+      { name: "Tunguskogur Campground", type: "Campingplatz", campingCard: true, lat: 66.060327, lng: -23.2039703 },
+      { name: "Bakkafjordur Camping", type: "Campingplatz", campingCard: true, lat: 66.0368958, lng: -14.8029322 },
+      { name: "Siglufjörður Campsite", type: "Campingplatz", campingCard: true, lat: 66.1495926, lng: -18.9101066 },
+      { name: "Kiðagil", type: "Campingplatz", campingCard: true, lat: 65.5021807, lng: -17.4559447 },
+
+      { name: "Keflavík International Airport (KEF)", type: "Attraktion", lat: 63.985, lng: -22.6056, day: [1] },
+      { name: "Bridge Between Continents", type: "Attraktion", lat: 63.8672, lng: -22.6756, day: [1] },
+      { name: "Gunnuhver Geothermal Area", type: "Attraktion", lat: 63.8194, lng: -22.6853, day: [1] },
+      { name: "Reykjavík (Zentrum)", type: "Attraktion", lat: 64.1466, lng: -21.9426, day: [1] },
+      { name: "Þingvellir National Park", type: "Attraktion", lat: 64.2558, lng: -21.1297, day: [2] },
+      { name: "Geysir Geothermal Area", type: "Attraktion", lat: 64.3104, lng: -20.3024, day: [2] },
+      { name: "Gullfoss Waterfall", type: "Attraktion", lat: 64.3271, lng: -20.1199, day: [2] },
+      { name: "Secret Lagoon (Flúðir)", type: "Attraktion", lat: 64.1374, lng: -20.3094, day: [2] },
+      { name: "Seljalandsfoss", type: "Attraktion", lat: 63.6156, lng: -19.9886, day: [3] },
+      { name: "Skógafoss", type: "Attraktion", lat: 63.5321, lng: -19.5113, day: [3] },
+      { name: "Reynisfjara Black Sand Beach", type: "Attraktion", lat: 63.4023, lng: -19.0445, day: [3] },
+      { name: "Vík í Mýrdal", type: "Attraktion", lat: 63.4194, lng: -19.0061, day: [3] },
+      { name: "Fjaðrárgljúfur Canyon", type: "Attraktion", lat: 63.7713, lng: -18.1718, day: [4] },
+      { name: "Skaftafell (Nationalparkzentrum)", type: "Attraktion", lat: 64.0165, lng: -16.9664, day: [4] },
+      { name: "Svartifoss", type: "Attraktion", lat: 64.0275, lng: -16.9753, day: [4] },
+      { name: "Jökulsárlón Glacier Lagoon", type: "Attraktion", lat: 64.0489, lng: -16.1777, day: [5] },
+      { name: "Diamond Beach", type: "Attraktion", lat: 64.0433, lng: -16.1751, day: [5] },
+      { name: "Stokksnes & Vestrahorn", type: "Attraktion", lat: 64.2443, lng: -14.9662, day: [5] },
+      { name: "Djúpivogur", type: "Attraktion", lat: 64.6564, lng: -14.2923, day: [6] },
+      { name: "Seyðisfjörður", type: "Attraktion", lat: 65.2598, lng: -13.9921, day: [6] },
+      { name: "Dettifoss (Westufer)", type: "Attraktion", lat: 65.8144, lng: -16.4113, day: [7] },
+      { name: "Lake Mývatn", type: "Attraktion", lat: 65.6039, lng: -16.9961, day: [7] },
+      { name: "Hverir Geothermal Area", type: "Attraktion", lat: 65.6415, lng: -16.8073, day: [7] },
+      { name: "Mývatn Nature Baths", type: "Attraktion", lat: 65.6309, lng: -16.8478, day: [8] },
+      { name: "Krafla Caldera / Viti", type: "Attraktion", lat: 65.7171, lng: -16.7544, day: [8] },
+      { name: "Goðafoss", type: "Attraktion", lat: 65.6844, lng: -17.5502, day: [9] },
+      { name: "Akureyri (Zentrum)", type: "Attraktion", lat: 65.6835, lng: -18.0875, day: [9] },
+      { name: "Whale Watching Húsavík", type: "Attraktion", lat: 66.0465, lng: -17.3422, day: [9] },
+      { name: "Glaumbær Turf Houses", type: "Attraktion", lat: 65.6107, lng: -19.5042, day: [10] },
+      { name: "Kirkjufell", type: "Attraktion", lat: 64.9417, lng: -23.3069, day: [11] },
+      { name: "Arnarstapi", type: "Attraktion", lat: 64.7667, lng: -23.6231, day: [12] },
+      { name: "Djúpalónssandur", type: "Attraktion", lat: 64.7536, lng: -23.8953, day: [12] },
+      { name: "Sky Lagoon", type: "Attraktion", lat: 64.1236, lng: -21.9384, day: [13] },
+
+      { name: "Reykjavík Campsite", type: "Campingplatz", campingCard: false, lat: 64.146, lng: -21.8753, day: [1, 13] },
+      { name: "Sandgerði Campsite", type: "Campingplatz", campingCard: true, lat: 64.0336, lng: -22.7071 },
+      { name: "Skjól Camping", type: "Campingplatz", campingCard: true, lat: 64.3111, lng: -20.2319 },
+      { name: "Flúðir Campsite", type: "Campingplatz", campingCard: true, lat: 64.1353, lng: -20.3189, day: [2] },
+      { name: "Gata Free Camping", type: "Campingplatz", campingCard: true, lat: 63.8406, lng: -21.3912 },
+      { name: "Vík Camping", type: "Campingplatz", campingCard: false, lat: 63.4192, lng: -18.9956, day: [3] },
+      { name: "Skaftafell Campground", type: "Campingplatz", campingCard: false, lat: 64.0164, lng: -16.9675, day: [4] },
+      { name: "Höfn Camping", type: "Campingplatz", campingCard: false, lat: 64.2581, lng: -15.2031, day: [5] },
+      { name: "Djúpivogur Campsite", type: "Campingplatz", campingCard: true, lat: 64.6548, lng: -14.2954 },
+      { name: "Seyðisfjörður Camping", type: "Campingplatz", campingCard: true, lat: 65.2599, lng: -13.9984, day: [6] },
+      { name: "Mývatn (Bjarg Campsite)", type: "Campingplatz", campingCard: false, lat: 65.6411, lng: -16.9131, day: [7, 8] },
+      { name: "Fjalladýrd (Möðrudalur)", type: "Campingplatz", campingCard: true, lat: 65.3739, lng: -15.8828 },
+      { name: "Húsavík Campground", type: "Campingplatz", campingCard: true, lat: 66.0494, lng: -17.3384 },
+      { name: "Hamrar (Akureyri)", type: "Campingplatz", lat: 65.6486, campingCard: false, lng: -18.1025, day: [9] },
+      { name: "Varmahlíð Campsite", type: "Campingplatz", campingCard: true, lat: 65.5532, lng: -19.4441, day: [10] },
+      { name: "Sauðárkrókur Campsite", type: "Campingplatz", campingCard: true, lat: 65.7424, lng: -19.6515 },
+      { name: "Grundarfjörður Campsite", type: "Campingplatz", campingCard: true, lat: 64.9177, lng: -23.2558, day: [11, 12] },
+      { name: "Hellissandur Campsite", type: "Campingplatz", campingCard: true, lat: 64.9161, lng: -23.8869 }
+    ];
+
+    // Ensure every entry has a `day` attribute (default empty array). Convert numbers to arrays.
+    data.forEach(d => {
+      // Normalize `day` to always be an array (or empty array if missing)
+      if (d.day === undefined || d.day === null) d.day = [];
+      else if (!Array.isArray(d.day)) d.day = [d.day];
+
+      // Label the Camping grounds
+      if (d.type === 'Campingplatz') {
+        if (d.campingCard) {
+          if (d.day && d.day.length > 0) {
+            d.type = 'Campingplatz (CampingCard & Route)';
+          } else {
+            d.type = 'Campingplatz (CampingCard)';
+          }
+          
+        } else {
+          if (d.day && d.day.length > 0) {
+            d.type = 'Campingplatz (Route)';
+          } else {
+            d.type = 'Campingplatz';
+          }
+        }
+      }
+    });
+
+    const colors = {
+      "Attraktion": "#1f78b4",
+      "Campingplatz (Route)": "#e31a1c",
+      "Campingplatz (CampingCard)": "#33a02c",
+      "Campingplatz (CampingCard & Route)": "#ff7f00"
+    };
+
+    const map = L.map('map').setView([64.5, -19], 6.5);
+    L.tileLayer('https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png', {
+      attribution: 'Karte: &copy; OpenStreetMap-Mitwirkende',
+      maxZoom: 18
+    }).addTo(map);
+
+    // Kilometerskala (nur metrisch) in der linken unteren Ecke
+    L.control.scale({ position: 'bottomleft', metric: true, imperial: false }).addTo(map);
+
+    // Create markers as L.marker with a divIcon so we can show the `day` inside the circle
+    const markers = data.map(item => {
+      const color = colors[item.type] || '#555555';
+      const dayText = Array.isArray(item.day) && item.day.length ? item.day.join(',') : '';
+      const icon = L.divIcon({
+        className: 'camp-div-icon',
+        html: `<div class="marker-circle" style="background:${color};">${dayText}</div>`,
+        iconSize: [18, 18],
+        popupAnchor: [0, -12]
+      });
+      const marker = L.marker([item.lat, item.lng], { icon }).bindPopup(`<strong>${item.name}</strong><br>${item.type}`);
+      marker._item = item;
+      marker._color = color;
+      return marker;
+    });
+
+    const markersLayer = L.layerGroup().addTo(map);
+
+    // add all markers once
+    markers.forEach(m => markersLayer.addLayer(m));
+
+    function updateMarkers(filterDay) {
+      // normalize
+      const fd = (filterDay === 'all' || filterDay === null || filterDay === undefined) ? 'all' : Number(filterDay);
+      console.log('updateMarkers filterDay=', fd);
+      let matchCount = 0;
+      markers.forEach(m => {
+        const itemDay = Array.isArray(m._item.day) ? m._item.day : [];
+        const isVisible = (fd === 'all') || (Array.isArray(itemDay) && itemDay.includes(fd));
+        if (isVisible) matchCount++;
+        const el = m.getElement ? m.getElement() : null;
+        if (el) {
+          const circle = el.querySelector('.marker-circle');
+          if (circle) {
+            if (isVisible) circle.classList.remove('dim'); else circle.classList.add('dim');
+          } else {
+            // fallback
+            el.style.opacity = isVisible ? '1' : '0.28';
+            el.style.transform = isVisible ? 'scale(1)' : 'scale(0.92)';
+          }
+        }
+      });
+      console.log('updateMarkers matched', matchCount, 'of', markers.length);
+    }
+
+    // show all initially
+    updateMarkers('all');
+
+    const bounds = L.featureGroup(markers).getBounds();
+    if (bounds.isValid()) {
+      map.fitBounds(bounds.pad(0.1));
+    }
+
+    allDays = Array.from(new Set(data.flatMap(d => Array.isArray(d.day) ? d.day : []))).sort((a, b) => a - b);
+
+    // Combined control: Tage + Legende
+    const controls = L.control({ position: 'bottomright' });
+    controls.onAdd = function () {
+      const div = L.DomUtil.create('div', 'legend');
+
+      // Days section
+      const daysDiv = document.createElement('div');
+      daysDiv.innerHTML = '<strong>Tage</strong><br>';
+      const btnAll = document.createElement('button');
+      btnAll.textContent = 'Alle';
+      btnAll.style.margin = '4px 6px 4px 0';
+      btnAll.dataset.day = 'all';
+      daysDiv.appendChild(btnAll);
+
+      for (let i of allDays) {
+        const b = document.createElement('button');
+        b.textContent = i;
+        b.style.margin = '4px 6px 4px 0';
+        b.dataset.day = String(i);
+        const has = data.some(d => Array.isArray(d.day) && d.day.includes(i));
+        if (!has) b.disabled = true;
+        daysDiv.appendChild(b);
+      }
+
+      div.appendChild(daysDiv);
+
+      // Legend section
+      const legDiv = document.createElement('div');
+      legDiv.innerHTML = '<strong>Legende</strong><br>' +
+        Object.entries(colors)
+          .map(([label, color]) => {
+            return `<div><span class="legend-color" style="background:${color}"></span>${label}</div>`;
+          })
+          .join('');
+      div.appendChild(legDiv);
+
+      // click handling for days — robust button detection and stop propagation
+      div.addEventListener('click', (ev) => {
+        ev.preventDefault();
+        ev.stopPropagation();
+        try {
+          let btn = null;
+          const t = ev.target;
+          if (t && t.nodeType === 1) {
+            btn = t.tagName === 'BUTTON' ? t : t.closest('button');
+          } else if (t && t.parentElement) {
+            btn = t.parentElement.closest ? t.parentElement.closest('button') : null;
+          }
+          if (!btn) return;
+          const dayAttr = btn.dataset ? btn.dataset.day : undefined;
+          if (dayAttr === undefined) return;
+          const dayVal = dayAttr === 'all' ? 'all' : parseInt(dayAttr, 10);
+          Array.from(div.querySelectorAll('button')).forEach(b => b.style.fontWeight = 'normal');
+          btn.style.fontWeight = '700';
+          updateMarkers(dayVal);
+        } catch (err) {
+          console.error('Day button handler error', err);
+          updateMarkers('all');
+        }
+      });
+
+      // default select all
+      btnAll.style.fontWeight = '700';
+
+      return div;
+    };
+    controls.addTo(map);
+  </script>
+</body>
+</html>
