@@ -178,8 +178,8 @@
       .station-list {
         position: absolute;
         left: 50%;
-        bottom: 12px;
-        top: auto;
+        top: 12px;
+        bottom: auto;
         transform: translateX(-50%);
         width: calc(100% - 24px);
         max-width: calc(100vw - 24px);
@@ -427,13 +427,14 @@
     allDays = Array.from(new Set(data.flatMap(d => Array.isArray(d.day) ? d.day : []))).sort((a, b) => a - b);
 
     // Create right-side station list container inside the map
-    const stationListDiv = L.DomUtil.create('div', 'station-list', map.getContainer());
-    stationListDiv.innerHTML = '<div class="overlay-header"><strong>Stationen</strong><button class="toggle-btn" aria-expanded="true" title="Minimieren">−</button></div><div class="overlay-content"><ul class="stations"></ul></div>';
+    const stationListDiv = L.DomUtil.create('div', 'station-list collapsed', map.getContainer());
+    stationListDiv.innerHTML = '<div class="overlay-header"><strong>Stationen</strong><button class="toggle-btn" aria-expanded="false" title="Erweitern">+</button></div><div class="overlay-content"><ul class="stations"></ul></div>';
     const stationToggle = stationListDiv.querySelector('.toggle-btn');
     stationToggle.addEventListener('click', () => {
       const isCollapsed = stationListDiv.classList.toggle('collapsed');
       stationToggle.textContent = isCollapsed ? '+' : '−';
       stationToggle.setAttribute('aria-expanded', String(!isCollapsed));
+      stationToggle.title = isCollapsed ? 'Erweitern' : 'Minimieren';
     });
 
     // Render the list of stations filtered by day
@@ -471,7 +472,7 @@
     // Combined control: Tage + Legende
     const controls = L.control({ position: window.innerWidth <= 768 ? 'topright' : 'bottomright' });
     controls.onAdd = function () {
-      const div = L.DomUtil.create('div', 'legend');
+      const div = L.DomUtil.create('div', 'legend collapsed');
 
       const header = document.createElement('div');
       header.className = 'overlay-header';
@@ -479,9 +480,9 @@
       const toggle = document.createElement('button');
       toggle.className = 'toggle-btn';
       toggle.type = 'button';
-      toggle.setAttribute('aria-expanded', 'true');
-      toggle.title = 'Minimieren';
-      toggle.textContent = '−';
+      toggle.setAttribute('aria-expanded', 'false');
+      toggle.title = 'Erweitern';
+      toggle.textContent = '+';
       header.appendChild(toggle);
       div.appendChild(header);
 
@@ -528,6 +529,7 @@
         const isCollapsed = div.classList.toggle('collapsed');
         toggle.textContent = isCollapsed ? '+' : '−';
         toggle.setAttribute('aria-expanded', String(!isCollapsed));
+        updateStationListPosition();
       });
 
       // click handling for days and legend filters — robust button detection and stop propagation
@@ -577,11 +579,32 @@
     };
     controls.addTo(map);
 
+    function updateStationListPosition() {
+      const legendEl = document.querySelector('.legend');
+      if (window.innerWidth <= 768) {
+        stationListDiv.style.left = '50%';
+        stationListDiv.style.transform = 'translateX(-50%)';
+        if (legendEl) {
+          const rect = legendEl.getBoundingClientRect();
+          stationListDiv.style.top = `${rect.bottom + 12}px`;
+        } else {
+          stationListDiv.style.top = '12px';
+        }
+      } else {
+        stationListDiv.style.left = '12px';
+        stationListDiv.style.transform = 'none';
+        stationListDiv.style.top = '80px';
+      }
+    }
+
     function updateVh() {
       document.documentElement.style.setProperty('--vh', `${window.innerHeight * 0.01}px`);
     }
+
+    updateStationListPosition();
     updateVh();
     window.addEventListener('resize', () => {
+      updateStationListPosition();
       updateVh();
       setTimeout(() => map.invalidateSize(), 150);
     });
