@@ -453,14 +453,24 @@
 
     // Create right-side station list container inside the map
     const stationListDiv = L.DomUtil.create('div', 'station-list collapsed', map.getContainer());
-    stationListDiv.innerHTML = '<div class="overlay-header"><strong>Stationen</strong><button class="toggle-btn" aria-expanded="false" title="Erweitern">+</button></div><div class="overlay-content"><ul class="stations"></ul></div>';
+    stationListDiv.innerHTML = '<div class="overlay-header"><strong>Stationen</strong><div style="display:inline-flex;gap:8px"><button class="copy-btn" title="Kopieren">Kopieren</button><button class="toggle-btn" aria-expanded="false" title="Erweitern">+</button></div></div><div class="overlay-content"><ul class="stations"></ul></div>';
     const stationToggle = stationListDiv.querySelector('.toggle-btn');
+    const stationCopyBtn = stationListDiv.querySelector('.copy-btn');
     stationToggle.addEventListener('click', () => {
       const isCollapsed = stationListDiv.classList.toggle('collapsed');
       stationToggle.textContent = isCollapsed ? '+' : '−';
       stationToggle.setAttribute('aria-expanded', String(!isCollapsed));
       stationToggle.title = isCollapsed ? 'Erweitern' : 'Minimieren';
     });
+    if (stationCopyBtn) {
+      stationCopyBtn.addEventListener('click', (ev) => {
+        ev.stopPropagation();
+        copyFilteredStationNames();
+        const prev = stationCopyBtn.textContent;
+        stationCopyBtn.textContent = 'Kopiert';
+        setTimeout(() => { stationCopyBtn.textContent = prev; }, 1400);
+      });
+    }
 
     // Render the list of stations filtered by day
     function renderStationList(filterDay, filterType) {
@@ -493,6 +503,35 @@
     }
     // initial render
     renderStationList('all', 'all');
+
+    function copyFilteredStationNames() {
+      const fd = (activeDay === 'all' || activeDay === null || activeDay === undefined) ? 'all' : Number(activeDay);
+      const ft = (activeType === 'all' || activeType === null || activeType === undefined) ? 'all' : activeType;
+      const names = data.filter(item => {
+        const itemDay = Array.isArray(item.day) ? item.day : [];
+        const matchesDay = (fd === 'all') || (Array.isArray(itemDay) && itemDay.includes(fd));
+        const matchesType = (ft === 'all') || item.type === ft;
+        return matchesDay && matchesType;
+      }).map(i => i.name);
+      const text = names.length ? names.join('\n') : 'Keine Punkte ausgewählt.';
+      if (navigator.clipboard && navigator.clipboard.writeText) {
+        navigator.clipboard.writeText(text).catch(() => {
+          const ta = document.createElement('textarea');
+          ta.value = text;
+          document.body.appendChild(ta);
+          ta.select();
+          try { document.execCommand('copy'); } catch (e) { /* ignore */ }
+          document.body.removeChild(ta);
+        });
+      } else {
+        const ta = document.createElement('textarea');
+        ta.value = text;
+        document.body.appendChild(ta);
+        ta.select();
+        try { document.execCommand('copy'); } catch (e) { /* ignore */ }
+        document.body.removeChild(ta);
+      }
+    }
 
     // Combined control: Tage + Legende
     const controls = L.control({ position: window.innerWidth <= 768 ? 'topright' : 'bottomright' });
