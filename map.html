@@ -37,6 +37,26 @@
       border-radius: 3px;
       border: 1px solid #999;
     }
+    .legend button {
+      border: none;
+      background: transparent;
+      color: inherit;
+      font: inherit;
+      cursor: pointer;
+      padding: 2px 4px;
+      text-align: left;
+    }
+    .legend .type-btn {
+      display: flex;
+      align-items: center;
+      gap: 6px;
+      width: 100%;
+      margin: 4px 0;
+      justify-content: flex-start;
+    }
+    .legend button.active {
+      font-weight: 700;
+    }
     .marker-circle {
       width: 18px;
       height: 18px;
@@ -58,6 +78,27 @@
       opacity: 0.28;
       transform: scale(0.92);
     }
+    .station-list {
+      position: absolute;
+      right: 12px;
+      top: 12px;
+      width: 350px;
+      max-height: 60vh;
+      overflow: auto;
+      background: white;
+      padding: 10px;
+      box-shadow: 0 6px 18px rgba(0,0,0,0.25);
+      border-radius: 6px;
+      font-family: Arial, sans-serif;
+      font-size: 13px;
+      z-index: 650;
+    }
+    .station-list ul { list-style: none; margin: 6px 0 0 0; padding: 0; }
+    .station-item { display: flex; gap: 8px; align-items: center; padding: 6px 4px; border-bottom: 1px solid #eee; cursor: pointer; }
+    .station-item:hover { background: #fafafa; }
+    .station-day { min-width: 30px; text-align: center; font-weight:700; color: #333; }
+    .station-name { flex: 1; }
+    .station-type { font-size: 11px; color: #666; margin-left: 6px; white-space: nowrap; }
   </style>
 </head>
 <body>
@@ -128,6 +169,35 @@
       { name: "Arnarstapi", type: "Attraktion", lat: 64.7667, lng: -23.6231, day: [12] },
       { name: "Djúpalónssandur", type: "Attraktion", lat: 64.7536, lng: -23.8953, day: [12] },
       { name: "Sky Lagoon", type: "Attraktion", lat: 64.1236, lng: -21.9384, day: [13] },
+      { name: "Fosslaug", type: "Attraktion", lat: 65.4942185, lng: -19.3861638, day: [10] },
+      { name: "Folaldafoss", type: "Attraktion", lat: 64.8046063, lng: -14.561357, day: [] },
+      { name: "Kolugljúfur Canyon", type: "Attraktion", lat: 65.3333839, lng: -20.5738707, day: [11] },
+      { name: "Dyrhólaey", type: "Attraktion", lat: 63.4014584, lng: -19.1410027, day: [3] },
+      { name: "Dynjandi", type: "Attraktion", lat: 65.7326051, lng: -23.2088746, day: [] },
+      { name: "Látrabjarg", type: "Attraktion", lat: 65.5025804, lng: -24.5419979, day: [] },
+      { name: "Rauðisandur", type: "Attraktion", lat: 65.4674441, lng: -23.9502889, day: [] },
+      { name: "Schiffswrack Garðar BA 64", type: "Attraktion", lat: 65.5222453, lng: -23.8111788, day: [] },
+
+      { name: "Gudrunarlaug", type: "Hot Pot", lat: 65.2463742, lng: -21.807887, day: [11]},
+      { name: "Hrunalaug", type: "Hot Pot", lat: 64.132539, lng: -20.256247, day: [2] },
+      { name: "Seljavallalaug", type: "Hot Pot", lat: 63.565576, lng: -19.607593, day: [3] },
+      { name: "Landbrotalaug", type: "Hot Pot", lat: 64.832262, lng: -22.318461, day: [12] },
+      { name: "Reykjadalur Steam Valley", type: "Hot River", lat: 64.022648, lng: -21.211516, day: [] },
+      { name: "Kvika Footbath", type: "Hot Pot", lat: 64.052601, lng: -22.043621, day: [1] },
+      { name: "Hellulaug", type: "Hot Pot", lat: 65.577239, lng: -23.159496, day: [] },
+      { name: "Pollurinn", type: "Hot Pot", lat: 65.648218, lng: -23.402636, day: [] },
+      { name: "Drangsnes Hot Pots", type: "Hot Pot", lat: 65.692027, lng: -21.438253, day: [] },
+      { name: "Grettislaug", type: "Hot Pot", lat: 65.882414, lng: -19.693433, day: [] },
+      { name: "Fosslaug", type: "Hot Pot", lat: 65.494165, lng: -19.383569, day: [10] },
+      { name: "Hoffell Hot Tubs", type: "Hot Pot", lat: 64.394628, lng: -15.341272, day: [5] },
+      { name: "Djúpavogskörin", type: "Hot Pot", lat: 64.654162, lng: -14.341595, day: [6] },
+      { name: "Krossneslaug", type: "Hot Pot", lat: 66.055106, lng: -21.507421, day: [] },
+      { name: "Hörgshlíðarlaug", type: "Hot Pot", lat: 65.831201, lng: -22.628412, day: [] },
+      { name: "Reykjafjarðarlaug", type: "Hot Pot", lat: 65.623192, lng: -23.468749, day: [] },
+      { name: "Laugavallalaug", type: "Hot Waterfall", lat: 64.954721, lng: -15.908412, day: [] },
+      { name: "Brimketill", type: "Attraktion", lat: 63.814212, lng: -22.551694, day: [1] },
+      { name: "Nautholsvik", type: "Attraktion", lat: 64.121516, lng: -21.929512, day: [13] },
+      { name: "Hveravellir Hot Spring", type: "Hot Pot", lat: 64.866412, lng: -19.551612, day: [] },
 
       { name: "Reykjavík Campsite", type: "Campingplatz", campingCard: false, lat: 64.146, lng: -21.8753, day: [1, 13] },
       { name: "Sandgerði Campsite", type: "Campingplatz", campingCard: true, lat: 64.0336, lng: -22.7071 },
@@ -176,6 +246,7 @@
 
     const colors = {
       "Attraktion": "#1f78b4",
+      "Hot Pot": "#8e44ad",
       "Campingplatz (Route)": "#e31a1c",
       "Campingplatz (CampingCard)": "#33a02c",
       "Campingplatz (CampingCard & Route)": "#ff7f00"
@@ -211,14 +282,25 @@
     // add all markers once
     markers.forEach(m => markersLayer.addLayer(m));
 
-    function updateMarkers(filterDay) {
-      // normalize
-      const fd = (filterDay === 'all' || filterDay === null || filterDay === undefined) ? 'all' : Number(filterDay);
-      console.log('updateMarkers filterDay=', fd);
+    let activeDay = 'all';
+    let activeType = 'all';
+
+    function updateMarkers(filterDay, filterType) {
+      const dayToUse = (filterDay === undefined || filterDay === null) ? activeDay : filterDay;
+      const typeToUse = (filterType === undefined || filterType === null) ? activeType : filterType;
+      activeDay = dayToUse;
+      activeType = typeToUse;
+
+      const fd = (dayToUse === 'all' || dayToUse === null || dayToUse === undefined) ? 'all' : Number(dayToUse);
+      const ft = (typeToUse === 'all' || typeToUse === null || typeToUse === undefined) ? 'all' : typeToUse;
+      console.log('updateMarkers filterDay=', fd, 'filterType=', ft);
       let matchCount = 0;
       markers.forEach(m => {
         const itemDay = Array.isArray(m._item.day) ? m._item.day : [];
-        const isVisible = (fd === 'all') || (Array.isArray(itemDay) && itemDay.includes(fd));
+        const itemType = m._item.type;
+        const matchesDay = (fd === 'all') || (Array.isArray(itemDay) && itemDay.includes(fd));
+        const matchesType = (ft === 'all') || itemType === ft;
+        const isVisible = matchesDay && matchesType;
         if (isVisible) matchCount++;
         const el = m.getElement ? m.getElement() : null;
         if (el) {
@@ -233,10 +315,12 @@
         }
       });
       console.log('updateMarkers matched', matchCount, 'of', markers.length);
+      // update the right-side station list for the active filter
+      try { renderStationList(fd, ft); } catch (e) { /* render may not be defined yet during initial load */ }
     }
 
     // show all initially
-    updateMarkers('all');
+    updateMarkers('all', 'all');
 
     const bounds = L.featureGroup(markers).getBounds();
     if (bounds.isValid()) {
@@ -244,6 +328,42 @@
     }
 
     allDays = Array.from(new Set(data.flatMap(d => Array.isArray(d.day) ? d.day : []))).sort((a, b) => a - b);
+
+    // Create right-side station list container inside the map
+    const stationListDiv = L.DomUtil.create('div', 'station-list', map.getContainer());
+    stationListDiv.innerHTML = '<strong>Stationen</strong><ul class="stations"></ul>';
+
+    // Render the list of stations filtered by day
+    function renderStationList(filterDay, filterType) {
+      const fd = (filterDay === 'all' || filterDay === null || filterDay === undefined) ? 'all' : Number(filterDay);
+      const ft = (filterType === 'all' || filterType === null || filterType === undefined) ? 'all' : filterType;
+      const ul = stationListDiv.querySelector('ul.stations');
+      ul.innerHTML = '';
+      data.forEach((item, idx) => {
+        const itemDay = Array.isArray(item.day) ? item.day : [];
+        const matchesDay = (fd === 'all') || (Array.isArray(itemDay) && itemDay.includes(fd));
+        const matchesType = (ft === 'all') || item.type === ft;
+        if (!matchesDay || !matchesType) return;
+        const li = document.createElement('li');
+        li.className = 'station-item';
+        li.dataset.index = idx;
+        const dayText = Array.isArray(item.day) && item.day.length ? item.day.join(',') : '';
+        li.innerHTML = `<div class="station-day">${dayText}</div><div class="station-name">${item.name}</div><div class="station-type">${item.type}</div>`;
+        ul.appendChild(li);
+      });
+      // attach click handler to open popup and center marker
+      ul.querySelectorAll('.station-item').forEach(li => {
+        li.addEventListener('click', (ev) => {
+          const idx = Number(li.dataset.index);
+          const m = markers[idx];
+          if (!m) return;
+          map.setView(m.getLatLng(), Math.max(map.getZoom(), 10));
+          m.openPopup();
+        });
+      });
+    }
+    // initial render
+    renderStationList('all', 'all');
 
     // Combined control: Tage + Legende
     const controls = L.control({ position: 'bottomright' });
@@ -257,6 +377,7 @@
       btnAll.textContent = 'Alle';
       btnAll.style.margin = '4px 6px 4px 0';
       btnAll.dataset.day = 'all';
+      btnAll.className = 'day-btn';
       daysDiv.appendChild(btnAll);
 
       for (let i of allDays) {
@@ -264,6 +385,7 @@
         b.textContent = i;
         b.style.margin = '4px 6px 4px 0';
         b.dataset.day = String(i);
+        b.className = 'day-btn';
         const has = data.some(d => Array.isArray(d.day) && d.day.includes(i));
         if (!has) b.disabled = true;
         daysDiv.appendChild(b);
@@ -274,14 +396,15 @@
       // Legend section
       const legDiv = document.createElement('div');
       legDiv.innerHTML = '<strong>Legende</strong><br>' +
+        `<button class="type-btn" data-type="all">Alle Typen</button>` +
         Object.entries(colors)
           .map(([label, color]) => {
-            return `<div><span class="legend-color" style="background:${color}"></span>${label}</div>`;
+            return `<button class="type-btn" data-type="${label}"><span class="legend-color" style="background:${color}"></span>${label}</button>`;
           })
           .join('');
       div.appendChild(legDiv);
 
-      // click handling for days — robust button detection and stop propagation
+      // click handling for days and legend filters — robust button detection and stop propagation
       div.addEventListener('click', (ev) => {
         ev.preventDefault();
         ev.stopPropagation();
@@ -294,20 +417,35 @@
             btn = t.parentElement.closest ? t.parentElement.closest('button') : null;
           }
           if (!btn) return;
+
           const dayAttr = btn.dataset ? btn.dataset.day : undefined;
-          if (dayAttr === undefined) return;
-          const dayVal = dayAttr === 'all' ? 'all' : parseInt(dayAttr, 10);
-          Array.from(div.querySelectorAll('button')).forEach(b => b.style.fontWeight = 'normal');
-          btn.style.fontWeight = '700';
-          updateMarkers(dayVal);
+          const typeAttr = btn.dataset ? btn.dataset.type : undefined;
+
+          if (dayAttr !== undefined) {
+            const dayVal = dayAttr === 'all' ? 'all' : parseInt(dayAttr, 10);
+            Array.from(div.querySelectorAll('.day-btn')).forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            updateMarkers(dayVal, activeType);
+            return;
+          }
+
+          if (typeAttr !== undefined) {
+            const typeVal = typeAttr === 'all' ? 'all' : typeAttr;
+            Array.from(div.querySelectorAll('.type-btn')).forEach(b => b.classList.remove('active'));
+            btn.classList.add('active');
+            updateMarkers(activeDay, typeVal);
+            return;
+          }
         } catch (err) {
-          console.error('Day button handler error', err);
-          updateMarkers('all');
+          console.error('Filter button handler error', err);
+          updateMarkers('all', 'all');
         }
       });
 
-      // default select all
-      btnAll.style.fontWeight = '700';
+      btnAll.classList.add('day-btn');
+      btnAll.classList.add('active');
+      const defaultTypeBtn = legDiv.querySelector('[data-type="all"]');
+      if (defaultTypeBtn) defaultTypeBtn.classList.add('active');
 
       return div;
     };
