@@ -100,7 +100,8 @@
       justify-content: flex-start;
       flex-wrap: wrap;
     }
-    .legend .day-btn {
+    .legend .day-btn,
+    .legend .names-toggle-btn {
       display: inline-flex;
       align-items: center;
       justify-content: center;
@@ -111,6 +112,20 @@
     }
     .legend button.active {
       font-weight: 700;
+    }
+    .marker-label {
+      background: rgba(255, 255, 255, 0.96);
+      color: #222;
+      border: 1px solid rgba(0, 0, 0, 0.12);
+      padding: 4px 8px;
+      border-radius: 4px;
+      box-shadow: 0 1px 4px rgba(0, 0, 0, 0.12);
+      font-size: 13px;
+      white-space: nowrap;
+      pointer-events: none;
+    }
+    .marker-label.leaflet-tooltip {
+      opacity: 1;
     }
     .marker-circle {
       width: 18px;
@@ -369,6 +384,14 @@
         popupAnchor: [0, -12]
       });
       const marker = L.marker([item.lat, item.lng], { icon }).bindPopup(`<strong>${item.name}</strong><br>${item.type}`);
+      marker.bindTooltip(item.name, {
+        permanent: false,
+        direction: 'right',
+        className: 'marker-label',
+        offset: [10, 0],
+        interactive: false
+      });
+      marker._labelVisible = false;
       marker._item = item;
       marker._color = color;
       return marker;
@@ -381,6 +404,7 @@
 
     let activeDay = 'all';
     let activeType = 'all';
+    let labelsVisible = false;
 
     function updateMarkers(filterDay, filterType) {
       const dayToUse = (filterDay === undefined || filterDay === null) ? activeDay : filterDay;
@@ -414,6 +438,7 @@
       console.log('updateMarkers matched', matchCount, 'of', markers.length);
       // update the right-side station list for the active filter
       try { renderStationList(fd, ft); } catch (e) { /* render may not be defined yet during initial load */ }
+      if (labelsVisible) updateMarkerLabels(fd, ft);
     }
 
     // show all initially
@@ -522,6 +547,24 @@
           })
           .join('');
       content.appendChild(legDiv);
+
+      const labelSection = document.createElement('div');
+      labelSection.className = 'selected-names-section';
+      labelSection.innerHTML = '<strong>Punkte beschriften</strong><br>';
+      const namesToggle = document.createElement('button');
+      namesToggle.className = 'names-toggle-btn';
+      namesToggle.type = 'button';
+      namesToggle.textContent = 'Namen einblenden';
+      labelSection.appendChild(namesToggle);
+      content.appendChild(labelSection);
+
+      namesToggle.addEventListener('click', (event) => {
+        event.stopPropagation();
+        labelsVisible = !labelsVisible;
+        namesToggle.textContent = labelsVisible ? 'Namen ausblenden' : 'Namen einblenden';
+        updateMarkerLabels(activeDay, activeType);
+      });
+
       div.appendChild(content);
 
       toggle.addEventListener('click', (event) => {
@@ -578,6 +621,23 @@
       return div;
     };
     controls.addTo(map);
+
+    function updateMarkerLabels(filterDay, filterType) {
+      const fd = (filterDay === 'all' || filterDay === null || filterDay === undefined) ? 'all' : Number(filterDay);
+      const ft = (filterType === 'all' || filterType === null || filterType === undefined) ? 'all' : filterType;
+      markers.forEach(m => {
+        const itemDay = Array.isArray(m._item.day) ? m._item.day : [];
+        const itemType = m._item.type;
+        const matchesDay = (fd === 'all') || itemDay.includes(fd);
+        const matchesType = (ft === 'all') || itemType === ft;
+        const isVisible = matchesDay && matchesType;
+        if (labelsVisible && isVisible) {
+          m.openTooltip();
+        } else {
+          m.closeTooltip();
+        }
+      });
+    }
 
     function updateStationListPosition() {
       const legendEl = document.querySelector('.legend');
