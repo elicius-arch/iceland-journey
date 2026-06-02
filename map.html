@@ -26,6 +26,39 @@
       border-radius: 6px;
       font-family: Arial, sans-serif;
       font-size: 14px;
+      max-width: min(340px, calc(100vw - 24px));
+      max-height: 60vh;
+      overflow: hidden;
+      box-sizing: border-box;
+    }
+    .overlay-header {
+      display: flex;
+      align-items: center;
+      justify-content: space-between;
+      gap: 8px;
+      margin-bottom: 8px;
+    }
+    .toggle-btn {
+      border: none;
+      background: transparent;
+      color: inherit;
+      font: inherit;
+      cursor: pointer;
+      padding: 4px 6px;
+      border-radius: 4px;
+    }
+    .toggle-btn:hover {
+      background: rgba(0,0,0,0.08);
+    }
+    .overlay-content {
+      overflow: auto;
+      max-height: inherit;
+    }
+    .collapsed .overlay-content {
+      display: none;
+    }
+    .collapsed {
+      max-height: 46px;
     }
 
     .legend-color {
@@ -37,14 +70,21 @@
       border-radius: 3px;
       border: 1px solid #999;
     }
+
     .legend button {
       border: none;
       background: transparent;
       color: inherit;
       font: inherit;
       cursor: pointer;
-      padding: 2px 4px;
+      padding: 4px 6px;
       text-align: left;
+      border-radius: 4px;
+    }
+    .legend button:hover,
+    .legend button.active {
+      background: rgba(0, 0, 0, 0.05);
+      font-weight: 700;
     }
     .legend .type-btn {
       display: flex;
@@ -53,6 +93,16 @@
       width: 100%;
       margin: 4px 0;
       justify-content: flex-start;
+      flex-wrap: wrap;
+    }
+    .legend .day-btn {
+      display: inline-flex;
+      align-items: center;
+      justify-content: center;
+      min-width: 36px;
+      margin: 4px 6px 4px 0;
+      padding: 6px 8px;
+      border-radius: 4px;
     }
     .legend button.active {
       font-weight: 700;
@@ -80,9 +130,10 @@
     }
     .station-list {
       position: absolute;
-      right: 12px;
-      top: 12px;
-      width: 350px;
+      left: 12px;
+      top: 80px;
+      width: min(350px, calc(100% - 24px));
+      max-width: 90vw;
       max-height: 60vh;
       overflow: auto;
       background: white;
@@ -92,6 +143,7 @@
       font-family: Arial, sans-serif;
       font-size: 13px;
       z-index: 650;
+      box-sizing: border-box;
     }
     .station-list ul { list-style: none; margin: 6px 0 0 0; padding: 0; }
     .station-item { display: flex; gap: 8px; align-items: center; padding: 6px 4px; border-bottom: 1px solid #eee; cursor: pointer; }
@@ -99,6 +151,43 @@
     .station-day { min-width: 30px; text-align: center; font-weight:700; color: #333; }
     .station-name { flex: 1; }
     .station-type { font-size: 11px; color: #666; margin-left: 6px; white-space: nowrap; }
+
+    @media (max-width: 768px) {
+      .legend {
+        font-size: 12px;
+        padding: 8px 10px;
+        width: calc(100vw - 24px);
+        max-width: calc(100vw - 24px);
+        max-height: 28vh;
+      }
+      .legend .type-btn {
+        flex-wrap: wrap;
+        justify-content: flex-start;
+      }
+      .legend .day-btn {
+        margin: 4px 4px 4px 0;
+      }
+      .station-list {
+        position: absolute;
+        left: 50%;
+        bottom: 12px;
+        top: auto;
+        transform: translateX(-50%);
+        width: calc(100% - 24px);
+        max-width: calc(100vw - 24px);
+        max-height: 30vh;
+      }
+      .station-item {
+        flex-wrap: wrap;
+        justify-content: space-between;
+      }
+      .station-type {
+        margin-left: 0;
+        margin-top: 4px;
+        width: 100%;
+        white-space: normal;
+      }
+    }
   </style>
 </head>
 <body>
@@ -331,7 +420,13 @@
 
     // Create right-side station list container inside the map
     const stationListDiv = L.DomUtil.create('div', 'station-list', map.getContainer());
-    stationListDiv.innerHTML = '<strong>Stationen</strong><ul class="stations"></ul>';
+    stationListDiv.innerHTML = '<div class="overlay-header"><strong>Stationen</strong><button class="toggle-btn" aria-expanded="true" title="Minimieren">−</button></div><div class="overlay-content"><ul class="stations"></ul></div>';
+    const stationToggle = stationListDiv.querySelector('.toggle-btn');
+    stationToggle.addEventListener('click', () => {
+      const isCollapsed = stationListDiv.classList.toggle('collapsed');
+      stationToggle.textContent = isCollapsed ? '+' : '−';
+      stationToggle.setAttribute('aria-expanded', String(!isCollapsed));
+    });
 
     // Render the list of stations filtered by day
     function renderStationList(filterDay, filterType) {
@@ -366,9 +461,24 @@
     renderStationList('all', 'all');
 
     // Combined control: Tage + Legende
-    const controls = L.control({ position: 'bottomright' });
+    const controls = L.control({ position: window.innerWidth <= 768 ? 'topright' : 'bottomright' });
     controls.onAdd = function () {
       const div = L.DomUtil.create('div', 'legend');
+
+      const header = document.createElement('div');
+      header.className = 'overlay-header';
+      header.innerHTML = '<strong>Filter</strong>';
+      const toggle = document.createElement('button');
+      toggle.className = 'toggle-btn';
+      toggle.type = 'button';
+      toggle.setAttribute('aria-expanded', 'true');
+      toggle.title = 'Minimieren';
+      toggle.textContent = '−';
+      header.appendChild(toggle);
+      div.appendChild(header);
+
+      const content = document.createElement('div');
+      content.className = 'overlay-content';
 
       // Days section
       const daysDiv = document.createElement('div');
@@ -391,7 +501,7 @@
         daysDiv.appendChild(b);
       }
 
-      div.appendChild(daysDiv);
+      content.appendChild(daysDiv);
 
       // Legend section
       const legDiv = document.createElement('div');
@@ -402,10 +512,18 @@
             return `<button class="type-btn" data-type="${label}"><span class="legend-color" style="background:${color}"></span>${label}</button>`;
           })
           .join('');
-      div.appendChild(legDiv);
+      content.appendChild(legDiv);
+      div.appendChild(content);
+
+      toggle.addEventListener('click', (event) => {
+        event.stopPropagation();
+        const isCollapsed = div.classList.toggle('collapsed');
+        toggle.textContent = isCollapsed ? '+' : '−';
+        toggle.setAttribute('aria-expanded', String(!isCollapsed));
+      });
 
       // click handling for days and legend filters — robust button detection and stop propagation
-      div.addEventListener('click', (ev) => {
+      content.addEventListener('click', (ev) => {
         ev.preventDefault();
         ev.stopPropagation();
         try {
@@ -450,6 +568,10 @@
       return div;
     };
     controls.addTo(map);
+
+    window.addEventListener('resize', () => {
+      setTimeout(() => map.invalidateSize(), 150);
+    });
   </script>
 </body>
 </html>
